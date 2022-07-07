@@ -53,6 +53,9 @@ type File struct {
 
 func UnzipToDir(destDir string, zipData []byte) error {
 	files, err := UnzipToFileData(zipData)
+	if err != nil {
+		return err
+	}
 
 	for _, file := range files {
 		err = os.MkdirAll(destDir, os.ModePerm)
