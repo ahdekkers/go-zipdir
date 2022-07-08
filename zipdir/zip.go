@@ -111,9 +111,10 @@ func doZip(sourcePath, targetPath string, entries []os.DirEntry, writer *zip.Wri
 		sourceName := filepath.Join(sourcePath, entry.Name())
 		targetName := filepath.Join(targetPath, entry.Name())
 		if entry.IsDir() {
-			dirEntries, err := os.ReadDir(entry.Name())
+			dirPath := filepath.Join(sourcePath, entry.Name())
+			dirEntries, err := os.ReadDir(dirPath)
 			if err != nil {
-				return fmt.Errorf("failed to read dir: dirPath=%s error=%v", entry.Name(), err)
+				return fmt.Errorf("failed to read dir: dirPath=%s error=%v", dirPath, err)
 			}
 
 			err = doZip(sourceName, targetName, dirEntries, writer)
