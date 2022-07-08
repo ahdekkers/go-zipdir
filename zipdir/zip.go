@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func ZipToBytes(path string) ([]byte, error) {
@@ -58,12 +59,13 @@ func UnzipToDir(destDir string, zipData []byte) error {
 	}
 
 	for _, file := range files {
-		err = os.MkdirAll(destDir, os.ModePerm)
+		path := filepath.Join(destDir, file.Name)
+		fileDir := path[:strings.LastIndex(path, "/")]
+		err = os.MkdirAll(fileDir, os.ModePerm)
 		if err != nil {
 			return fmt.Errorf("failed to make dirs '%s': %v", destDir, err)
 		}
 
-		path := filepath.Join(destDir, file.Name)
 		outFile, err := os.OpenFile(path, os.O_CREATE|os.O_TRUNC|os.O_RDWR, os.ModePerm)
 		if err != nil {
 			if outFile != nil {
