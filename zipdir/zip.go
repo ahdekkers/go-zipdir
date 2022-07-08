@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -75,6 +76,10 @@ func UnzipToDir(destDir string, zipData []byte) error {
 		}
 
 		_, err = outFile.Write(file.Data)
+		closeErr := outFile.Close()
+		if closeErr != nil {
+			log.Printf("Error while closing file: file=%s error=%v", path, err)
+		}
 		if err != nil {
 			return fmt.Errorf("failed to write data to file '%s': %v", path, err)
 		}
