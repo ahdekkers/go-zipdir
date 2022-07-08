@@ -113,7 +113,7 @@ func doZip(sourcePath, targetPath string, entries []os.DirEntry, writer *zip.Wri
 		if entry.IsDir() {
 			dirEntries, err := os.ReadDir(entry.Name())
 			if err != nil {
-				return fmt.Errorf("failed to read dir: %v", err)
+				return fmt.Errorf("failed to read dir: dirPath=%s error=%v", entry.Name(), err)
 			}
 
 			err = doZip(sourceName, targetName, dirEntries, writer)
